@@ -42,12 +42,4 @@ public class Exercise3 {
         }
         return duplicatesCounter;
     }
-
-    public static void main(String[] args) {
-        float[] check = {5, 8, 5, 1, 4, 4, 5, 1, 85, 6, 1, 1, 7};
-        float[] newArray = removeDuplicationsFromArray(check);
-        for (int i = 0; i < newArray.length; i++){
-            System.out.println(newArray[i]);
-        }
-    }
 }

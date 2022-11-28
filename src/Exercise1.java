@@ -3,7 +3,8 @@ import java.util.Scanner;
 public class Exercise1 {
     public static void printAboveAverageValues(){
         Scanner scanner = new Scanner(System.in);
-        float[] numbersForAverage = new float[10];
+        final int ARRAY_LENGTH = 10;
+        float[] numbersForAverage = new float[ARRAY_LENGTH];
         float sum = 0;
         for (int i = 0; i < numbersForAverage.length; i++){
             System.out.println("Please enter your number: ");
@@ -17,9 +18,5 @@ public class Exercise1 {
                 System.out.println(numbersForAverage[i]);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        printAboveAverageValues();
     }
 }
