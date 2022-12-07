@@ -11,7 +11,7 @@ public class Exercise7 {
         do{
         currentDigit = random.nextInt(RANDOM_BOUND) + 1;
         if (!secret.contains(currentDigit + "")){
-            secret = secret + currentDigit;
+            secret += currentDigit;
         }
         }while (secret.length() < SECRET_LENGTH);
         return secret;
@@ -20,7 +20,6 @@ public class Exercise7 {
         boolean correct = false;
         if (secret.equals(guess)){
             correct = true;
-            System.out.println("YOU ARE THE WORLD CHAMPION!!!!");
         }else{
             int accurateCounter = 0;
             int partlyAccurateCounter = 0;
@@ -55,31 +54,25 @@ public class Exercise7 {
         final int GUESS_LENGTH = 4;
         final int GUESS_MIN_BOUND = 1;
         final int GUESS_MAX_BOUND = 6;
-        String usersGuess = "";
+        String usersGuess;
         boolean valid = false;
         System.out.println("Please enter your guess: ");
-        usersGuess = scanner.nextLine();
-        if (usersGuess.length() == GUESS_LENGTH){
-            if (inputRangeValidation(usersGuess, GUESS_MIN_BOUND, GUESS_MAX_BOUND)){
-                valid = true;
-            }
-        }
-        while (!valid){
-            System.out.println("ERROR! Make sure to enter a code of 4 digits in the range of 1-6: ");
+        do {
             usersGuess = scanner.nextLine();
             if (usersGuess.length() == GUESS_LENGTH){
                 if (inputRangeValidation(usersGuess, GUESS_MIN_BOUND, GUESS_MAX_BOUND)){
                     valid = true;
                 }
             }
-
-        }
-
+            if (!valid){
+                System.out.println("ERROR! Make sure to enter a code of 4 digits in the range of 1-6: ");
+            }
+        }while (!valid);
         return usersGuess;
     }
     public static boolean inputRangeValidation (String input, int minBound, int maxBound){
         boolean valid = true;
-        int tempDigit = 0;
+        int tempDigit;
         for (int i = 0; i < input.length(); i++) {
             tempDigit = Integer.parseInt(String.valueOf(input.charAt(i)));
             if (tempDigit < minBound || tempDigit > maxBound) {
@@ -97,12 +90,12 @@ public class Exercise7 {
                 found = true;
                 break;
             }
-            duplicationCheck = duplicationCheck + usersGuess.charAt(i);
+            duplicationCheck += usersGuess.charAt(i);
         }
         return found;
     }
     public static boolean turnManager (String secret, int maxGuesses, boolean amountVisible){
-        boolean gameOver;
+        boolean gameWon;
         boolean penalty;
         final int PENALTY = 2;
         String usersGuess;
@@ -113,24 +106,21 @@ public class Exercise7 {
                 penalty = checkForDuplicates(usersGuess);
                 if (penalty){
                     maxGuesses -= PENALTY;
-                    System.out.print("Because of a duplication in your guess you're fined by 2 guesses ");
+                    System.out.print("Because of a duplication in your guess you're fined by 2 guesses");
                     if (amountVisible){
                         System.out.println("and your remaining amount of guesses are " + (maxGuesses - guessCounter) + " guesses.");
                     }else{
-                        System.out.println();
+                        System.out.println(".");
                     }
                 }
                 }while (penalty);
             guessCounter++;
-            gameOver = checkGuess(secret, usersGuess);
-            if (amountVisible && !gameOver){
+            gameWon = checkGuess(secret, usersGuess);
+            if (amountVisible && !gameWon){
                 System.out.println("You have " + (maxGuesses - guessCounter) + " more guesses.");
             }
-        }while(!gameOver && guessCounter < maxGuesses);
-        if (!gameOver) {
-            System.out.println("GAME OVER! The secret code was: " + secret);
-        }
-        return gameOver;
+        }while(!gameWon && guessCounter < maxGuesses);
+        return gameWon;
     }
     public static int getDifficulty (){
         Scanner scanner = new Scanner(System.in);
@@ -145,14 +135,13 @@ public class Exercise7 {
     }
     public static void printRules () {
         System.out.println("Welcome to the Code Guessing Game! Here you get to guess a 4-digit code: ");
-        System.out.println("Each digit of the code can range from 1-6, while a digit can't repeat itself. For example, 1345 and 5163 are legitimate codes.");
-        System.out.println("On the contrary, 9856 or 1225 aren't.");
-        System.out.println("Each turn you'll get to guess the code. Be aware, the same rules that applies on the code- apply on your guesses: ");
+        System.out.println("Each digit of the code can range from 1-6, while a digit can't repeat itself.");
+        System.out.println("Each turn you'll get to guess the code. Be aware, the same rules that applies on the code- apply on your guesses. ");
         System.out.println("Every time you'll enter a digit twice in the same guess- you'll get fined by 2 guessing chances.");
         System.out.println("You'll get a message showing how many digits you've guessed accurately, or partly accurate.");
         System.out.println("********************************************");
-        System.out.println("You can choose from 4 difficulty levels: ");
-        System.out.println("1. Easy ride: you get 20 chances to guess the code.");
+        System.out.println("You can choose from 4 difficulty levels. (To choose a level send it's number as shown below): ");
+        System.out.println("1. Easy: you get 20 chances to guess the code.");
         System.out.println("2. Moderate: you get 15 chances to guess the code.");
         System.out.println("3. Hard: you get 10 chances to guess the code.");
         System.out.println("4. Surprise Box: you'll get a random amount of chances that'll range between 5-25.");
@@ -174,21 +163,27 @@ public class Exercise7 {
         final int HARD = 3;
         final int RANDOM_MAX = 21;
         final int RANDOM_MIN = 5;
+        boolean win;
         int surpriseBox = random.nextInt(RANDOM_MAX) + RANDOM_MIN;
         if (difficulty == EASY){
-            System.out.println("You have " + EASY_GUESSES_MAX + " more guesses.");
-            turnManager(secret, EASY_GUESSES_MAX, amountVisible);
+            System.out.println("You got " + EASY_GUESSES_MAX + " guesses.");
+            win = turnManager(secret, EASY_GUESSES_MAX, amountVisible);
         } else if (difficulty == MODERATE) {
-            System.out.println("You have " + MODERATE_GUESSES_MAX + " more guesses.");
-            turnManager(secret, MODERATE_GUESSES_MAX, amountVisible);
+            System.out.println("You got " + MODERATE_GUESSES_MAX + " guesses.");
+            win =turnManager(secret, MODERATE_GUESSES_MAX, amountVisible);
         }else {
             if (difficulty == HARD){
-                System.out.println("You have " + HARD_GUESSES_MAX + " more guesses.");
-                turnManager(secret, HARD_GUESSES_MAX, amountVisible);
+                System.out.println("You got " + HARD_GUESSES_MAX + " guesses.");
+                win =turnManager(secret, HARD_GUESSES_MAX, amountVisible);
             }else{
                 amountVisible = false;
-                turnManager(secret, surpriseBox, amountVisible);
+                win =turnManager(secret, surpriseBox, amountVisible);
             }
+        }
+        if (win) {
+            System.out.println("YOU ARE THE WORLD CHAMPION!!!!");
+        }else{
+            System.out.println("GAME OVER! The secret code was: " + secret);
         }
     }
 }
