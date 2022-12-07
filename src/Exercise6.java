@@ -77,7 +77,7 @@ public class Exercise6 {
         }else if (string.equals("")){
             numericValue = 1;
         }else{
-            numericValue = Integer.valueOf(string);
+            numericValue = Integer.parseInt(string);
         }
         return numericValue;
     }

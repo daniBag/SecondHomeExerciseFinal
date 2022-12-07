@@ -37,7 +37,7 @@ public class Exercise3 {
                 }
             }
             if (duplicated){
-                duplicatedNumberDuplicationPrevention = duplicatedNumberDuplicationPrevention + containingCheck;
+                duplicatedNumberDuplicationPrevention += containingCheck;
             }
         }
         return duplicatesCounter;

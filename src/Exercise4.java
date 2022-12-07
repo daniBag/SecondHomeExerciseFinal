@@ -11,7 +11,6 @@ public class Exercise4 {
                 }
             }else{
                 if (arrayToCheck[i] == arrayToCheck[i +1]){
-                    peakIndex = INVALID;
                     break;
                 } else if (arrayToCheck[i] > arrayToCheck[i + 1]) {
                     peakIndex = i;

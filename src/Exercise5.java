@@ -41,22 +41,12 @@ public class Exercise5 {
     }
     public static char checkRows (char[] gameBoard, char firstPlayer, char secondPlayer) {
         final char NOT_FOUND = '-';
+        final int POSITION_FIX = 1;
         char victory = NOT_FOUND;
         for (int i = 0; i < 7; i += 3) {
-            if (gameBoard[i] == firstPlayer) {
-                if (gameBoard[i + 1] == firstPlayer) {
-                    if (gameBoard[i + 2] == firstPlayer) {
-                        victory = firstPlayer;
-                        break;
-                    }
-                }
-            } else if (gameBoard[i] == secondPlayer) {
-                if (gameBoard[i + 1] == secondPlayer) {
-                    if (gameBoard[i + 2] == secondPlayer) {
-                        victory = secondPlayer;
-                        break;
-                    }
-                }
+            victory = cellsCompare(gameBoard, i, POSITION_FIX, firstPlayer, secondPlayer, NOT_FOUND);
+            if (victory == firstPlayer || victory == secondPlayer){
+                break;
             }
         }
         return victory;
@@ -66,20 +56,9 @@ public class Exercise5 {
         final int POSITION_FIX = 3;
         char victory = NOT_FOUND;
         for (int i = 0; i < 3; i++) {
-            if (gameBoard[i] == firstPlayer) {
-                if (gameBoard[i + POSITION_FIX] == firstPlayer) {
-                    if (gameBoard[i + (2 * POSITION_FIX)] == firstPlayer) {
-                        victory = firstPlayer;
-                        break;
-                    }
-                }
-            } else if (gameBoard[i] == secondPlayer) {
-                if (gameBoard[i + POSITION_FIX] == secondPlayer) {
-                    if (gameBoard[i + (2 * POSITION_FIX)] == secondPlayer) {
-                        victory = secondPlayer;
-                        break;
-                    }
-                }
+            victory = cellsCompare(gameBoard, i, POSITION_FIX, firstPlayer, secondPlayer, NOT_FOUND);
+            if (victory == firstPlayer || victory == secondPlayer){
+                break;
             }
         }
         return victory;
@@ -90,23 +69,29 @@ public class Exercise5 {
         final int POSITION_FIX = (4 - i);
         char victory = NOT_FOUND;
         for (i = 0; i < 3; i += 2) {
-            if (gameBoard[i] == firstPlayer) {
-                if (gameBoard[i + POSITION_FIX] == firstPlayer) {
-                    if (gameBoard[i + (2 * POSITION_FIX)] == firstPlayer) {
-                        victory = firstPlayer;
-                        break;
-                    }
-                }
-            } else if (gameBoard[i] == secondPlayer) {
-                if (gameBoard[i + POSITION_FIX] == secondPlayer) {
-                    if (gameBoard[i + (2 * POSITION_FIX)] == secondPlayer) {
-                        victory = secondPlayer;
-                        break;
-                    }
-                }
+            victory = cellsCompare(gameBoard, i, POSITION_FIX, firstPlayer, secondPlayer, NOT_FOUND);
+            if (victory == firstPlayer || victory == secondPlayer){
+                break;
             }
         }
         return victory;
+    }
+    public static char cellsCompare (char[] gameBoard, int i, int positionFix, char firstPlayer, char secondPlayer, char notFound){
+        char result = notFound;
+        if (gameBoard[i] == firstPlayer) {
+            if (gameBoard[i + positionFix] == firstPlayer) {
+                if (gameBoard[i + (2 * positionFix)] == firstPlayer) {
+                    result = firstPlayer;
+                }
+            }
+        } else if (gameBoard[i] == secondPlayer) {
+            if (gameBoard[i + positionFix] == secondPlayer) {
+                if (gameBoard[i + (2 * positionFix)] == secondPlayer) {
+                    result = secondPlayer;
+                }
+            }
+        }
+        return result;
     }
 
         public static char checkWinner (char[] gameBoard) {
@@ -126,7 +111,6 @@ public class Exercise5 {
             boolean gameOver = false;
             final char FIRST_PLAYER = 'X';
             final char SECOND_PLAYER = 'O';
-            final char NOT_FOUND = '-';
             char checkForWin;
             gameBoard[position] = playerSymbol;
             printBoard(gameBoard);
@@ -146,7 +130,7 @@ public class Exercise5 {
             final char FIRST_PLAYER = 'X';
             final char SECOND_PLAYER = 'O';
             char[] gameBoard = new char[BOARD_SIZE];
-            boolean gameOver = false;
+            boolean gameOver;
             int currentPosition;
             int movesCounter = 0;
             do {
